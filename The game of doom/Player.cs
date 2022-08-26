@@ -29,18 +29,29 @@
 
                 switch (age)
                 {
-                    case < 16:
+                    case < 15:
                         Console.WriteLine("Come on, you are far to young to play this game. Grow up!");
                         oldEnough = false;
                         Environment.Exit(0);
                         break;
-                    case >= 16:
+                    case >= 15:
                         Console.WriteLine("You are old enough to proceed lol");
                         oldEnough = true;
                         break;
                 }
-                
-                
+
+                if (age >= 15 && age !> 85)
+                {
+                    Console.WriteLine("You are quite young, you will be more curious but lacking in experience.");
+                }
+                else if (age >= 85 && age !> 170)
+                {
+
+                }
+                else if (age >= 170 && age !> 255)
+                {
+
+                }
             }
         }
     }
