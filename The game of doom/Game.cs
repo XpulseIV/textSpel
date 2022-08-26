@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyGame
+﻿namespace The_game_of_doom
 {
     internal class Game
     {
-        public int run()
+        public int Run()
         {
-            Player player = new Player();
-
+            var player = new Player();
+            
             return 0;
         }
     }

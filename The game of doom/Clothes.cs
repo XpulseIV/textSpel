@@ -1,8 +1,8 @@
-﻿namespace MyGame
+﻿namespace The_game_of_doom
 {
     internal struct Clothes
     {
-        public enum Hat
+        public enum Hats
         {
             Nothing,
             Hat,
@@ -11,9 +11,9 @@
             CowboyHat
         }
 
-        public enum Shirt
+        public enum Shirts
         {
-            TShirt,
+            Shirt,
             HawaiianShirt
         }
 
@@ -28,6 +28,11 @@
             FlipFlops,
             RegularBoots,
             Crooks
+        }
+
+        public Clothes DressPlayer()
+        {
+            return new Clothes();
         }
     }
 }

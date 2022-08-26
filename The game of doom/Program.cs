@@ -1,25 +1,36 @@
-﻿using System;
-
-namespace MyGame
+﻿namespace The_game_of_doom
 {
-    internal class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
-            Game game = new Game();
-
-            int error = game.run();
-
-            if (error != 0)
+            var continuePlaying = true;
+            
+            while (continuePlaying)
             {
-                Console.WriteLine("Something went horribly wrong! Error code is: " + error);
+                var game = new Game();
 
-                Environment.Exit(1);
-            } else
-            {
-                Console.WriteLine("Success! Thanks for playing my game, I hope you had fun!");
+                var error = game.Run();
+
+                if (error != 0)
+                {
+                    Console.WriteLine("Something went horribly wrong! Error code is: " + error);
+
+                    Environment.Exit(1);
+                } else
+                {
+                    Console.WriteLine("Success!");
+
+                    continuePlaying = Misc.ForceKey("Do you want to play again?: ", "YyNn") switch
+                    {
+                        "y" => true,
+                        "n" => false,
+                        _ => continuePlaying
+                    };
+                }
             }
+
+            Console.WriteLine("Thanks for playing my game, I hope you had fun!");
         }
     }
 }
