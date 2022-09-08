@@ -1,36 +1,34 @@
-﻿namespace The_game_of_doom
+﻿using The_game_of_doom.Classes.misc_classes;
+
+namespace The_game_of_doom
 {
     internal static class Program
     {
         private static void Main(string[] args)
         {
-            var continuePlaying = true;
+            //Creates the directory of saves if it does not exists
+            if (!Directory.Exists("saves")) Directory.CreateDirectory("saves");
             
-            while (continuePlaying)
+            //Dummy object
+            Game game = null!;
+            
+            //Create/load game
+            switch (Asker.ForceKey("Do you want to load a save? ", "YyNn"))
             {
-                var game = new Game();
-
-                var error = game.Run();
-
-                if (error != 0)
-                {
-                    Console.WriteLine("Something went horribly wrong! Error code is: " + error);
-
-                    Environment.Exit(1);
-                } else
-                {
-                    Console.WriteLine("Success!");
-
-                    continuePlaying = Misc.ForceKey("Do you want to play again?: ", "YyNn") switch
-                    {
-                        "y" => true,
-                        "n" => false,
-                        _ => continuePlaying
-                    };
-                }
+                case "Y" or "y":
+                    if (Directory.GetFiles("saves").Length == 0) goto newGame;
+                    
+                    var fileName = Menu.SelectSaveFile();
+                    game = XmlFilerDeluxe.LoadUser(fileName);
+                    break;
+                case "N" or "n":
+                    newGame:
+                    game = new Game();
+                    break;
             }
-
-            Console.WriteLine("Thanks for playing my game, I hope you had fun!");
+            
+            //Play game
+            game.Play();
         }
     }
 }

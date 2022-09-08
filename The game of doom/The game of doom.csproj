@@ -8,4 +8,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Classes\Game classes\Fish classes" />
+    <Folder Include="Classes\Game classes\Lake classes" />
+  </ItemGroup>
+
 </Project>
