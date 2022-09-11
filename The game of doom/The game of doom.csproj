@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Classes\Game classes\Fish classes" />
-    <Folder Include="Classes\Game classes\Lake classes" />
+    <PackageReference Include="NativeFileDialogSharp" Version="0.5.0" />
   </ItemGroup>
 
 </Project>

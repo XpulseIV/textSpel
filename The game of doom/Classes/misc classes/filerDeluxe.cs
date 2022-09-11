@@ -1,4 +1,6 @@
 ﻿using System.Xml.Serialization;
+using NativeFileDialogSharp;
+using The_game_of_doom.Classes.Game_classes;
 
 namespace The_game_of_doom.Classes.misc_classes
 {
@@ -57,13 +59,21 @@ namespace The_game_of_doom.Classes.misc_classes
             }
         }
 
-        public static void SaveUser(string fileName, Game? game)
+        public static void SaveGame(Game? game)
         {
-            WriteToXmlFile(fileName, game);
+            var fileName = Asker.ForceInput(
+                "Enter a name for the save file. (Observe that you cant enter the same name on two saves or else it will be overwritten!): ");
+            
+            WriteToXmlFile(Directory.GetCurrentDirectory() + "\\" + fileName + ".xml", game);
         }
 
-        public static Game LoadUser(string fileName)
+        public static Game LoadGame()
         {
+            selectSaveFile:
+            var dialogResult = Dialog.FileOpen(null, Directory.GetCurrentDirectory() + "\\saves");
+            if (dialogResult.IsCancelled) goto selectSaveFile;
+            
+            var fileName = dialogResult.Path!;
             var game = ReadFromXmlFile<Game>(fileName);
 
             return game;
