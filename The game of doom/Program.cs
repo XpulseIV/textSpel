@@ -1,4 +1,6 @@
 ﻿using The_game_of_doom.Classes.Game_classes;
+using The_game_of_doom.Classes.Game_classes.Player_classes;
+using The_game_of_doom.Classes.Game_classes.Player_stuff;
 using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom
@@ -7,6 +9,20 @@ namespace The_game_of_doom
     {
         private static void Main(string[] args)
         {
+            Console.CursorVisible = false;
+            
+            var player = new Player
+            {
+                Name = "Test",
+                Money = 1,
+                MaxMoney = 10,
+                Equipment = new Equipment(0)
+            };
+
+            Hud.PrintShop(player);
+            
+            /*
+            Console.CursorVisible = false;
             Console.WriteLine("Welcome to my attempt at a fishing game!");
             
             //Creates the directory of saves if it does not exists
@@ -40,6 +56,8 @@ namespace The_game_of_doom
             
             //Play game
             game.Play(playedSaveBefore);
+            
+            */
         }
     }
 }

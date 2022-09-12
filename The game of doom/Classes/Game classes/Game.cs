@@ -1,11 +1,12 @@
 ﻿using The_game_of_doom.Classes.Game_classes.Fish_classes;
 using The_game_of_doom.Classes.Game_classes.Player_classes;
+using The_game_of_doom.Classes.Game_classes.Player_stuff;
 using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom.Classes.Game_classes;
 
 [Serializable]
-public class Game
+public sealed class Game
 {
     public Player Player;
 
@@ -24,43 +25,26 @@ public class Game
                                        "3: To Hjälmaren\n" +
                                        "4: To Mälaren\n" +
                                        "5: To Storsjön\n" +
-                                       "6: To the shop\n", "123456");
+                                       "6: To the shop\n" +
+                                       "7: Exit game", "1234567");
 
-        var lakeIndex = -1;
-        switch (placeToGo)
-        {
-            case "1":
-                lakeIndex = 0;
-                break;
-            case "2":
-                lakeIndex = 1;
-                break;
-            case "3":
-                lakeIndex = 2;
-                break;
-            case "4":
-                lakeIndex = 3;
-                break;
-            case "5":
-                lakeIndex = 4;
-                break;
-            case "6":
-                ShopLogic();
-                
-                goto ChoosePlace;
-            case "7":
-                //Go back to place selection
-            break;
-        }
-
-        if (lakeIndex != -1)
-        {
-            //lakeLogic();
-            
-            goto ChoosePlace;
-        }
+        var lakeIndex = int.Parse(placeToGo);
         
-        XmlFilerDeluxe.SaveGame(this);
+        switch (lakeIndex)
+        {
+            case < 6:
+                //lakeLogic();
+            
+                goto ChoosePlace;
+            case 6:
+                ShopLogic();
+            
+                goto ChoosePlace;
+            case 7:
+                XmlFilerDeluxe.SaveGame(this);
+                Environment.Exit(0);
+                break;
+        }
     }
 
     private void ShopLogic()
@@ -73,10 +57,8 @@ public class Game
                 Console.WriteLine("Doorbell: Ding ding");
                 Thread.Sleep(100);
                 Console.WriteLine("Shop keep: What do you want to buy?");
-                Shop.PrintItems();
-                
-                
-                
+                var selectedProduct = Hud.PrintShop(Player);
+
                 break;
             case "N" or "n":
                 return;
@@ -89,7 +71,7 @@ public class Game
 
     public Game(int nothing)
     {
-        Player = new Player(0);
+        Player = new Player(0, 10);
 
         Lakes = new List<Lake>()
         {

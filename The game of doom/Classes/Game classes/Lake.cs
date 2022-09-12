@@ -3,7 +3,7 @@
 namespace The_game_of_doom.Classes.Game_classes;
 
 [Serializable]
-public class Lake
+public sealed class Lake
 {
     public string Name;
 
