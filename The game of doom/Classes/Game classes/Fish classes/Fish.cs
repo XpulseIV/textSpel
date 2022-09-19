@@ -1,6 +1,6 @@
 ﻿namespace The_game_of_doom.Classes.Game_classes.Fish_classes;
 
-public class Fish
+public sealed class Fish
 {
     public string Name;
     

@@ -1,6 +1,6 @@
 ﻿namespace The_game_of_doom.Classes.misc_classes;
 
-public class PrimeChecker
+public sealed class PrimeChecker
 {
     public static bool CheckNumber(ulong number)
     {

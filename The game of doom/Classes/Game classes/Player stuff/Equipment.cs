@@ -1,7 +1,7 @@
-﻿namespace The_game_of_doom.Classes.Game_classes.Player_classes;
+﻿namespace The_game_of_doom.Classes.Game_classes.Player_stuff;
 
 [Serializable]
-public class Equipment
+public sealed class Equipment
 {
     public FishingRod Fr;
     public Line Fl;
@@ -10,8 +10,8 @@ public class Equipment
     
     public enum FishingRod
     {
-        Normal = 0,
-        Upgraded = 1
+        Normal,
+        Upgraded
     }
     
     public enum Line
@@ -28,11 +28,15 @@ public class Equipment
         FourHooked,
         FiveHooked,
     }
-    
+
     public enum LookingAid
     {
         None,
-        Radar
+        RadarT1,
+        RadarT2,
+        RadarT3,
+        RadarT4,
+        RadarT5,
     }
 
     public Equipment()

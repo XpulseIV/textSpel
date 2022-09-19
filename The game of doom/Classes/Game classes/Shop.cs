@@ -1,10 +1,10 @@
-﻿using The_game_of_doom.Classes.Game_classes.Player_classes;
+﻿using The_game_of_doom.Classes.Game_classes.Player_stuff;
 using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom.Classes.Game_classes;
 
 [Serializable]
-public static class Shop
+public class Shop
 {
     public static string Name = "The fishers best friend";
 
@@ -13,6 +13,7 @@ public static class Shop
         new Price<Equipment.FishingRod, int>(Equipment.FishingRod.Normal, 1),
         new Price<Equipment.FishingRod, int>(Equipment.FishingRod.Upgraded, 2)
     };
+
     public static List<Price<Equipment.Line, int>> FishingLinePrices = new()
     {
         new Price<Equipment.Line, int>(Equipment.Line.Normal, 1),
@@ -30,6 +31,10 @@ public static class Shop
 
     public static List<Price<Equipment.LookingAid, int>> FishingLookingAidPrices = new()
     {
-        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.Radar, 2)
+        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.RadarT1, 2),
+        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.RadarT2, 3),
+        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.RadarT3, 4),
+        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.RadarT4, 5),
+        new Price<Equipment.LookingAid, int>(Equipment.LookingAid.RadarT5, 6)
     };
 }

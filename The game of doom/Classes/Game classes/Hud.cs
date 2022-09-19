@@ -1,35 +1,11 @@
 ﻿using The_game_of_doom.Classes.Game_classes.Player_stuff;
+using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom.Classes.Game_classes;
 
 public static class Hud
 {
-    public static int PrintShop(Player player)
-    {
-        var moneyBarText = "";
-        moneyBarText += "Money: ";
-        moneyBarText += CreateBar(player.Money, player.MaxMoney, 10);
-        moneyBarText += " " + player.Money;
-        PrintText(0, 0, moneyBarText);
-
-        var itemsInShop = "";
-        itemsInShop += "Items currently in shop\n";
-        itemsInShop += "-----------------------";
-        
-        PrintText(0, 2, itemsInShop);
-
-        return ShopMenu(player);
-    }
-
-    private static int ShopMenu(Player player)
-    {
-        var rodText = "";
-        
-        
-        //Make items display text
-        //Print display text PrintText(0, 3, something);
-        //select what to buy or leave
-    }
+    static Menu menu;
     
     private static void PrintText(int x, int y, string text)
     {
@@ -38,7 +14,7 @@ public static class Hud
         Console.Write(text);
     }
     
-    private static string CreateBar(double current, double max, double lenght)
+    public static string CreateBar(double current, double max, double lenght)
     {
         var bar = "";
         const char barFilledChar = '\u25A0';

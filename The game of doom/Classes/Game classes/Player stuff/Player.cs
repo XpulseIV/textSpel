@@ -1,10 +1,9 @@
-﻿using The_game_of_doom.Classes.Game_classes.Player_classes;
-using The_game_of_doom.Classes.misc_classes;
+﻿using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom.Classes.Game_classes.Player_stuff;
 
 [Serializable]
-public class Player
+public sealed class Player
 {
     public string Name;
 
@@ -12,6 +11,11 @@ public class Player
     public int MaxMoney;
 
     public Equipment Equipment;
+
+    public List<Equipment.FishingRod> ownedRods = new();
+    public List<Equipment.Line> ownedLines = new();
+    public List<Equipment.Hook> ownedHooks = new();
+    public List<Equipment.LookingAid> ownedRadars = new();
     
     public Player()
     {
@@ -25,5 +29,10 @@ public class Player
         MaxMoney = mM;
         
         Equipment = new Equipment(0);
+
+        ownedRods.Add(Equipment.FishingRod.Normal);
+        ownedLines.Add(Equipment.Line.Normal);
+        ownedHooks.Add(Equipment.Hook.Normal);
+        ownedRadars.Add(Equipment.LookingAid.None);
     }
 }

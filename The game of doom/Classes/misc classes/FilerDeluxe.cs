@@ -62,17 +62,20 @@ namespace The_game_of_doom.Classes.misc_classes
         public static void SaveGame(Game? game)
         {
             var fileName = Asker.ForceInput(
-                "Enter a name for the save file. (Observe that you cant enter the same name on two saves or else it will be overwritten!): ");
+                "Enter a name for the save file: ");
             
-            WriteToXmlFile(Directory.GetCurrentDirectory() + "\\" + fileName + ".xml", game);
+            WriteToXmlFile(Directory.GetCurrentDirectory() + "\\saves\\" + fileName + ".xml", game);
         }
 
         public static Game LoadGame()
         {
-            selectSaveFile:
-            var dialogResult = Dialog.FileOpen(null, Directory.GetCurrentDirectory() + "\\saves");
-            if (dialogResult.IsCancelled) goto selectSaveFile;
-            
+            DialogResult dialogResult = null;
+
+            do
+            {
+                dialogResult = Dialog.FileOpen(null, Directory.GetCurrentDirectory() + "\\saves");
+            } while (dialogResult.IsCancelled);
+
             var fileName = dialogResult.Path!;
             var game = ReadFromXmlFile<Game>(fileName);
 
