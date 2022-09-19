@@ -25,7 +25,7 @@ public sealed class Player
     {
         Name = Asker.ForceInput("Enter your name: ");
         
-        Money = 0;
+        Money = 100;
         MaxMoney = mM;
         
         Equipment = new Equipment(0);

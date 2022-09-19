@@ -1,12 +1,11 @@
 ﻿using The_game_of_doom.Classes.Game_classes;
-using The_game_of_doom.Classes.Game_classes.Player_stuff;
 using The_game_of_doom.Classes.misc_classes;
 
 namespace The_game_of_doom
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {   
             Console.CursorVisible = false;
             Console.WriteLine("Welcome to my attempt at a fishing game!");

@@ -416,14 +416,14 @@ namespace The_game_of_doom.Classes.misc_classes
             public Item Parent { get; private set; } = null;
             public string Name { get; }
             public int Index;
-            public Action Action { get; set; }
+            public Action? Action { get; set; }
             public IReadOnlyList<Item> Items { get; }
             public object Tag { get; set; }
             public bool ActionOnSelected { get; set; } = false;
             public bool ActionIfConfirmed { get; set; } = false;
             public int MaxColumns { get; set; }
 
-            public Item(string name, Action action, int i, int maxColumns = 0) : this(name, action, new Item[0], maxColumns)
+            public Item(string name, Action? action, int i, int maxColumns = 0) : this(name, action, new Item[0], maxColumns)
             {
                 Index = i;
             }
@@ -432,7 +432,7 @@ namespace The_game_of_doom.Classes.misc_classes
             {
             }
 
-            public Item(string name, Action action, Item[] items, int maxColumns = 0)
+            public Item(string name, Action? action, Item[] items, int maxColumns = 0)
             {
                 Name = name;
                 Action = action;
@@ -452,7 +452,7 @@ namespace The_game_of_doom.Classes.misc_classes
                 ((List<Item>)Items).Add(item);
             }
 
-            public Item Add(string name, Action a, int maxColumns = 0)
+            public Item Add(string name, Action? a, int maxColumns = 0)
             {
                 var itm = new Item(name, a, maxColumns, - 1) { Parent = this };
 
@@ -461,7 +461,7 @@ namespace The_game_of_doom.Classes.misc_classes
                 return itm;
             }
 
-            public Item Add(string name, Action a, object tag, int maxColumns = 0)
+            public Item Add(string name, Action? a, object tag, int maxColumns = 0)
             {
                 var itm = new Item(name, a, maxColumns, - 1) { Parent = this, Tag = tag };
 
