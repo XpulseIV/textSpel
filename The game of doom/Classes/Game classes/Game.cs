@@ -13,7 +13,7 @@ namespace The_game_of_doom.Classes.Game_classes
 
         public List<Lake> Lakes;
 
-        private Random Rng = new();
+        private Random _rng = new();
 
         public void Play(bool playedThisSaveBefore)
         {
@@ -240,7 +240,7 @@ namespace The_game_of_doom.Classes.Game_classes
                 new(name: "Storsjön", size: 20)
             };
 
-            int lakeIndex = this.Rng.Next(minValue: 0, maxValue: 4);
+            int lakeIndex = this._rng.Next(minValue: 0, maxValue: 4);
 
             this.Lakes[index: lakeIndex].Fishes.Add(item: new Fish
             {
