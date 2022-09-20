@@ -15,6 +15,7 @@ namespace The_game_of_doom.Classes.misc_classes
         Item selected;
 
         public Item Main { get; }
+        public int Money;
 
         public string ConfirmText { get; set; } = "Are you shure? [Y/N]";
 
@@ -36,18 +37,19 @@ namespace The_game_of_doom.Classes.misc_classes
         public List<Item> Items { get; }
         public List<String> Log { get; } = new List<string>();
 
-        public Menu() : this("", new Item[0])
+        public Menu() : this("", 0, new Item[0])
         {
         }
 
-        public Menu(Item[] items) : this("", items)
+        public Menu(Item[] items) : this("", 0, items)
         {
         }
 
-        public Menu(string title, Item[] items)
+        public Menu(string title, int m, Item[] items)
         {
-            Main = new Item(title, items);
+            Main = new Item(title, items: items);
             Items = new List<Item>(items);
+            Money = m;
 
             Current = Main;
 
@@ -302,7 +304,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
             while (cur != null)
             {
-                nav = cur.Name + " => " + nav;
+                nav = cur.Name + " => " + nav + " " + Money;
 
                 cur = cur.Parent;
             }
@@ -404,7 +406,7 @@ namespace The_game_of_doom.Classes.misc_classes
             public string Value { get; set; } = "";
             public string Title { get; set; }
 
-            public InputItem(string name, string title, Action<string> action) : base(name, null as Action, 0, -1)
+            public InputItem(string name, string title, Action<string> action) : base(name: name, null as Action, 0, -1)
             {
                 Title = title;
                 Action = action;
@@ -454,7 +456,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
             public Item Add(string name, Action? a, int maxColumns = 0)
             {
-                var itm = new Item(name, a, maxColumns, - 1) { Parent = this };
+                var itm = new Item(name: name, a, maxColumns, - 1) { Parent = this };
 
                 ((List<Item>)Items).Add(itm);
 
@@ -463,7 +465,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
             public Item Add(string name, Action? a, object tag, int maxColumns = 0)
             {
-                var itm = new Item(name, a, maxColumns, - 1) { Parent = this, Tag = tag };
+                var itm = new Item(name: name, a, maxColumns, - 1) { Parent = this, Tag = tag };
 
                 ((List<Item>)Items).Add(itm);
 

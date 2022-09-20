@@ -10,7 +10,7 @@ namespace The_game_of_doom.Classes.misc_classes
     /// <para>Use the [XmlIgnore] attribute to prevent a property/variable from being serialized.</para>
     /// <para>Object to be serialized must have a parameterless constructor.</para>
     /// </summary>
-    public static class XmlFilerDeluxe
+    internal static class XmlFilerDeluxe
     {
         /// <summary>
         /// Writes the given object instance to an XML file.
@@ -27,9 +27,9 @@ namespace The_game_of_doom.Classes.misc_classes
             TextWriter? writer = null;
             try
             {
-                var serializer = new XmlSerializer(typeof(T));
-                writer = new StreamWriter(filePath, append);
-                serializer.Serialize(writer, objectToWrite);
+                XmlSerializer serializer = new(type: typeof(T));
+                writer = new StreamWriter(path: filePath, append: append);
+                serializer.Serialize(textWriter: writer, o: objectToWrite);
             }
             finally
             {
@@ -49,9 +49,9 @@ namespace The_game_of_doom.Classes.misc_classes
             TextReader? reader = null;
             try
             {
-                var serializer = new XmlSerializer(typeof(T));
-                reader = new StreamReader(filePath);
-                return (T)serializer.Deserialize(reader)!;
+                XmlSerializer serializer = new(type: typeof(T));
+                reader = new StreamReader(path: filePath);
+                return (T)serializer.Deserialize(textReader: reader)!;
             }
             finally
             {
@@ -61,23 +61,22 @@ namespace The_game_of_doom.Classes.misc_classes
 
         public static void SaveGame(Game? game)
         {
-            var fileName = Asker.ForceInput(
-                "Enter a name for the save file: ");
-            
-            WriteToXmlFile(Directory.GetCurrentDirectory() + "\\saves\\" + fileName + ".xml", game);
+            string fileName = Asker.ForceInput(
+                prompt: "Enter a name for the save file: ");
+
+            XmlFilerDeluxe.WriteToXmlFile(filePath: Directory.GetCurrentDirectory() + "\\saves\\" + fileName + ".xml", objectToWrite: game);
         }
 
         public static Game LoadGame()
         {
-            DialogResult dialogResult = null;
+            DialogResult dialogResult;
 
             do
-            {
-                dialogResult = Dialog.FileOpen(null, Directory.GetCurrentDirectory() + "\\saves");
-            } while (dialogResult.IsCancelled);
+                dialogResult = Dialog.FileOpen(filterList: null, defaultPath: Directory.GetCurrentDirectory() + "\\saves");
+            while (dialogResult.IsCancelled);
 
-            var fileName = dialogResult.Path!;
-            var game = ReadFromXmlFile<Game>(fileName);
+            string fileName = dialogResult.Path!;
+            Game game = XmlFilerDeluxe.ReadFromXmlFile<Game>(filePath: fileName);
 
             return game;
         }

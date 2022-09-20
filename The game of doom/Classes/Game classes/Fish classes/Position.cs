@@ -1,32 +1,31 @@
-﻿namespace The_game_of_doom.Classes.Game_classes.Fish_classes;
-
-[Serializable]
-public struct Position
+﻿namespace The_game_of_doom.Classes.Game_classes.Fish_classes
 {
-    public int PosX = new();
-    public int PosY = new();
-
-    private Random _rng = new();
-    
-    public Position()
+    [Serializable]
+    public struct Position
     {
-    }
+        public int PosX { get; set; } = new();
+        public int PosY { get; set; } = new();
 
-    public Position(int x, int y)
-    {
-        PosX = x;
-        PosY = y;
-    }
+        private Random _rng = new();
 
-    public Position(int lakeSize)
-    {
-        PosX = _rng.Next(0, lakeSize);
-        PosY = _rng.Next(0, lakeSize);
-    }
+        public Position() { }
 
-    public void Move(int speed)
-    {
-        PosX += _rng.Next(-1, 1) * speed;
-        PosY += _rng.Next(-1, 1) * speed;
+        public Position(int x, int y)
+        {
+            this.PosX = x;
+            this.PosY = y;
+        }
+
+        public Position(int lakeSize)
+        {
+            this.PosX = this._rng.Next(minValue: 0, maxValue: lakeSize);
+            this.PosY = this._rng.Next(minValue: 0, maxValue: lakeSize);
+        }
+
+        public void Move(int speed)
+        {
+            this.PosX += this._rng.Next(minValue: -1, maxValue: 1) * speed;
+            this.PosY += this._rng.Next(minValue: -1, maxValue: 1) * speed;
+        }
     }
 }

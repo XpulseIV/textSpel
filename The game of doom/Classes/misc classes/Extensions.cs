@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace The_game_of_doom.Classes.misc_classes
+﻿namespace The_game_of_doom.Classes.misc_classes
 {
     public static class Extensions
     {
-        public static int[] FindAllIndex<T>(this T[] array, Predicate<T> match)
+        public static int[] FindAllIndex<T>(this IEnumerable<T> array, Predicate<T> match)
         {
-            return array.Select((value, index) => match(value) ? index : -1)
-                    .Where(index => index != -1).ToArray();
+            return array.Select(selector: (value, index) => match(obj: value) ? index : -1)
+                .Where(predicate: static index => index != -1).ToArray();
         }
     }
 }
