@@ -1,4 +1,6 @@
-﻿namespace The_game_of_doom.Classes.Game_classes.Player_stuff
+﻿using The_game_of_doom.Classes.misc_classes;
+
+namespace The_game_of_doom.Classes.Game_classes.Player_stuff
 {
     [Serializable]
     public sealed class Equipment
@@ -6,7 +8,8 @@
         public FishingRod Fr;
         public Line Fl;
         public Hook Fh;
-        public LookingAid La;
+        public LookingAid Lat { get; }
+        public Radar La;
 
         public enum FishingRod
         {
@@ -39,14 +42,13 @@
             RadarT5
         }
 
-        public Equipment() { }
-
-        public Equipment(int nothing)
+        public Equipment()
         {
             this.Fr = FishingRod.Normal;
             this.Fl = Line.Normal;
             this.Fh = Hook.Normal;
-            this.La = LookingAid.None;
+            this.Lat = LookingAid.None;
+            this.La = new Radar(LookingAid.None);
         }
     }
 }

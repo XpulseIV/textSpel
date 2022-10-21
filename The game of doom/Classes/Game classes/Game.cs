@@ -9,51 +9,52 @@ namespace The_game_of_doom.Classes.Game_classes
     {
         public Player Player;
 
-        private Menu _menu;
+        [NonSerialized] private Menu _menu;
 
         public List<Lake> Lakes;
 
-        private Random _rng = new();
+        [NonSerialized] private Random _rng = new();
 
         public void Play(bool playedThisSaveBefore)
         {
-            Console.WriteLine(value: playedThisSaveBefore ? "Welcome back " + this.Player.Name + "!" : "Welcome to this game, hope you have fun!");
+            Console.Clear();
+            Console.WriteLine(playedThisSaveBefore ? "Welcome back " + this.Player.Name + "!" : "Welcome to this save, hope you have fun!");
 
         ChoosePlace:
-            string placeToGo = Asker.ForceKey(prompt: "Where do you want to go?\n" +
-                                                      "1: To Vänern\n" +
-                                                      "2: To Vättern\n" +
-                                                      "3: To Hjälmaren\n" +
-                                                      "4: To Mälaren\n" +
-                                                      "5: To Storsjön\n" +
-                                                      "6: To the shop\n" +
-                                                      "7: Exit game\n", valid: "1234567");
+            string placeToGo = Asker.ForceKey("Where do you want to go?\n" +
+                                              "1: To Vänern\n" +
+                                              "2: To Vättern\n" +
+                                              "3: To Hjälmaren\n" +
+                                              "4: To Mälaren\n" +
+                                              "5: To Storsjön\n" +
+                                              "6: To the shop\n" +
+                                              "7: Exit game\n", "1234567", 1);
 
-            int lakeIndex = int.Parse(s: placeToGo);
+            int lakeIndex = int.Parse(placeToGo);
 
             switch (lakeIndex)
             {
                 case < 6:
-                    //lakeLogic();
+                    this.LakeLogic(lakeIndex);
 
                     goto ChoosePlace;
                 case 6:
-                    this.ShopMenu(player: this.Player);
+                    this.ShopMenu(this.Player);
 
                     goto ChoosePlace;
                 case 7:
-                    string key = Asker.ForceKey(prompt: "Do you want to save?\n" +
-                                                        "1: Yes\n" +
-                                                        "2: No\n", valid: "YyNn");
+                    string key = Asker.ForceKey("Do you want to save?\n" +
+                                                "1: Yes\n" +
+                                                "2: No\n", "YyNn");
 
                     switch (key)
                     {
                         case "Y" or "y":
-                            XmlFilerDeluxe.SaveGame(game: this);
-                            Environment.Exit(exitCode: 0);
+                            BinarySerialization.SaveGame(this);
+                            Environment.Exit(0);
                             break;
                         case "N" or "n":
-                            Environment.Exit(exitCode: 0);
+                            Environment.Exit(0);
                             break;
                     }
 
@@ -65,43 +66,43 @@ namespace The_game_of_doom.Classes.Game_classes
         {
             this._menu = new Menu
             (
-                title: "The fishers best friend",
-                m: player.Money,
-                items: new[]
+                "The fishers best friend",
+                player.Money,
+                new[]
                 {
-                    new Menu.Item(name: "Rods", items: new[]
+                    new Menu.Item("Rods", new[]
                     {
-                        new Menu.Item(name: "Normal rod Price: (" + Shop.FishingRodPrices[index: 0].ItemPrice + ")", action: this.BuyFishingRod, i: 0),
-                        new Menu.Item(name: "Upgraded rod Price: (" + Shop.FishingRodPrices[index: 1].ItemPrice + ")", action: this.BuyFishingRod, i: 1)
+                        new Menu.Item("Normal rod Price: (" + Shop.FishingRodPrices[0].ItemPrice + ")", this.BuyFishingRod, 0),
+                        new Menu.Item("Upgraded rod Price: (" + Shop.FishingRodPrices[1].ItemPrice + ")", this.BuyFishingRod, 1)
                     }),
 
-                    new Menu.Item(name: "Lines", items: new[]
+                    new Menu.Item("Lines", new[]
                     {
-                        new Menu.Item(name: "Normal line Price: (" + Shop.FishingLinePrices[index: 0].ItemPrice + ")", action: this.BuyFishingLine, i: 0),
-                        new Menu.Item(name: "Tough line Price: (" + Shop.FishingLinePrices[index: 1].ItemPrice + ")", action: this.BuyFishingLine, i: 1)
+                        new Menu.Item("Normal line Price: (" + Shop.FishingLinePrices[0].ItemPrice + ")", this.BuyFishingLine, 0),
+                        new Menu.Item("Tough line Price: (" + Shop.FishingLinePrices[1].ItemPrice + ")", this.BuyFishingLine, 1)
                     }),
 
-                    new Menu.Item(name: "Hooks", items: new[]
+                    new Menu.Item("Hooks", new[]
                     {
-                        new Menu.Item(name: "One hooked Price: (" + Shop.FishingLinePrices[index: 0].ItemPrice + ")", action: this.BuyFishingHook, i: 0),
-                        new Menu.Item(name: "Two hooked Price: (" + Shop.FishingHookPrices[index: 1].ItemPrice + ")", action: this.BuyFishingHook, i: 1),
-                        new Menu.Item(name: "Three hooked Price: (" + Shop.FishingHookPrices[index: 2].ItemPrice + ")", action: this.BuyFishingHook, i: 2),
-                        new Menu.Item(name: "Four hooked Price: (" + Shop.FishingHookPrices[index: 3].ItemPrice + ")", action: this.BuyFishingHook, i: 3),
-                        new Menu.Item(name: "Five hooked Price: (" + Shop.FishingHookPrices[index: 4].ItemPrice + ")", action: this.BuyFishingHook, i: 4)
+                        new Menu.Item("One hooked Price: (" + Shop.FishingLinePrices[0].ItemPrice + ")", this.BuyFishingHook, 0),
+                        new Menu.Item("Two hooked Price: (" + Shop.FishingHookPrices[1].ItemPrice + ")", this.BuyFishingHook, 1),
+                        new Menu.Item("Three hooked Price: (" + Shop.FishingHookPrices[2].ItemPrice + ")", this.BuyFishingHook, 2),
+                        new Menu.Item("Four hooked Price: (" + Shop.FishingHookPrices[3].ItemPrice + ")", this.BuyFishingHook, 3),
+                        new Menu.Item("Five hooked Price: (" + Shop.FishingHookPrices[4].ItemPrice + ")", this.BuyFishingHook, 4)
                     }),
 
-                    new Menu.Item(name: "Radars", items: new[]
+                    new Menu.Item("Radars", new[]
                     {
-                        new Menu.Item(name: "Radar tier 1 Price: (" + Shop.FishingLookingAidPrices[index: 0].ItemPrice + ")", action: this.BuyFishingRadar, i: 0),
-                        new Menu.Item(name: "Radar tier 2 Price: (" + Shop.FishingLookingAidPrices[index: 1].ItemPrice + ")", action: this.BuyFishingRadar, i: 1),
-                        new Menu.Item(name: "Radar tier 3 Price: (" + Shop.FishingLookingAidPrices[index: 2].ItemPrice + ")", action: this.BuyFishingRadar, i: 2),
-                        new Menu.Item(name: "Radar tier 4 Price: (" + Shop.FishingLookingAidPrices[index: 3].ItemPrice + ")", action: this.BuyFishingRadar, i: 3),
-                        new Menu.Item(name: "Radar tier 5 Price: (" + Shop.FishingLookingAidPrices[index: 4].ItemPrice + ")", action: this.BuyFishingRadar, i: 4)
+                        new Menu.Item("Radar tier 1 Price: (" + Shop.FishingLookingAidPrices[0].ItemPrice + ")", this.BuyFishingRadar, 0),
+                        new Menu.Item("Radar tier 2 Price: (" + Shop.FishingLookingAidPrices[1].ItemPrice + ")", this.BuyFishingRadar, 1),
+                        new Menu.Item("Radar tier 3 Price: (" + Shop.FishingLookingAidPrices[2].ItemPrice + ")", this.BuyFishingRadar, 2),
+                        new Menu.Item("Radar tier 4 Price: (" + Shop.FishingLookingAidPrices[3].ItemPrice + ")", this.BuyFishingRadar, 3),
+                        new Menu.Item("Radar tier 5 Price: (" + Shop.FishingLookingAidPrices[4].ItemPrice + ")", this.BuyFishingRadar, 4)
                     }),
 
-                    new Menu.Item(name: "Current player equipment", action: this.GenerateEquipmentDisplay, i: 0, maxColumns: -1),
+                    new Menu.Item("Current player equipment", this.GenerateEquipmentDisplay, 0, -1),
 
-                    new Menu.Item(name: "Exit", action: this.Exit, i: 0, maxColumns: -1)
+                    new Menu.Item("Exit", this.Exit, 1, -1)
                 }
             )
             {
@@ -113,10 +114,10 @@ namespace The_game_of_doom.Classes.Game_classes
 
             foreach (Menu.Item subMenu in this._menu.Items) subMenu.MaxColumns = 1;
 
-            this._menu.WriteLine(str: "Use ←↑↓→ for navigation.");
-            this._menu.WriteLine(str: "Press Esc for return to main menu.");
-            this._menu.WriteLine(str: "Press Backspace for return to parent menu.");
-            this._menu.WriteLine(str: "Press Del for clear log.");
+            this._menu.WriteLine("Use ←↑↓→ for navigation.");
+            this._menu.WriteLine("Press Esc for return to main menu.");
+            this._menu.WriteLine("Press Backspace for return to parent menu.");
+            this._menu.WriteLine("Press Del for clear log.");
 
             this._menu.Begin();
         }
@@ -127,74 +128,92 @@ namespace The_game_of_doom.Classes.Game_classes
 
             this._menu.Selected.Clear();
 
-            this._menu.Selected.Add(name: "Current fishing rod: " + playerEquipment.Fr, a: this.GenerateOwnedFishingRods);
-            this._menu.Selected.Add(name: "Current fishing line: " + playerEquipment.Fl, a: this.GeneratedOwnedFishingLines);
-            this._menu.Selected.Add(name: "Current fishing hook: " + playerEquipment.Fh, a: this.GenerateOwnedFishingHooks);
-            this._menu.Selected.Add(name: "Current fishing radar: " + playerEquipment.La, a: this.GeneratedOwnedFishingRadar);
+            this._menu.Selected.Add("Current fishing rod: " + playerEquipment.Fr, this.GenerateOwnedFishingRods);
+            this._menu.Selected.Add("Current fishing line: " + playerEquipment.Fl, this.GeneratedOwnedFishingLines);
+            this._menu.Selected.Add("Current fishing hook: " + playerEquipment.Fh, this.GenerateOwnedFishingHooks);
+            this._menu.Selected.Add("Current fishing radar: " + playerEquipment.La.RadarType, this.GeneratedOwnedFishingRadar);
         }
 
         private void BuyFishingRod()
         {
-            if (this.Player.OwnedRods.Contains(item: (Equipment.FishingRod)this._menu.Selected.Index)) return;
+            if (this.Player.OwnedRods.Contains((Equipment.FishingRod)this._menu.Selected.Index)) return;
 
-            if (this.Player.Money < Shop.FishingRodPrices[index: this._menu.Selected.Index].ItemPrice) return;
+            if (this.Player.Money < Shop.FishingRodPrices[this._menu.Selected.Index].ItemPrice) return;
 
-            this.Player.OwnedRods.Add(item: (Equipment.FishingRod)this._menu.Selected.Index);
-            this.Player.Money -= Shop.FishingRodPrices[index: this._menu.Selected.Index].ItemPrice;
+            this.Player.OwnedRods.Add((Equipment.FishingRod)(this._menu.Selected.Index));
+            this.Player.Money -= Shop.FishingRodPrices[this._menu.Selected.Index].ItemPrice;
         }
 
         private void BuyFishingLine()
         {
-            if (this.Player.OwnedLines.Contains(item: (Equipment.Line)this._menu.Selected.Index)) return;
+            if (this.Player.OwnedLines.Contains((Equipment.Line)this._menu.Selected.Index)) return;
 
-            if (this.Player.Money < Shop.FishingLinePrices[index: this._menu.Selected.Index].ItemPrice) return;
+            if (this.Player.Money < Shop.FishingLinePrices[this._menu.Selected.Index].ItemPrice) return;
 
-            this.Player.OwnedLines.Add(item: (Equipment.Line)this._menu.Selected.Index);
-            this.Player.Money -= Shop.FishingLinePrices[index: this._menu.Selected.Index].ItemPrice;
+            this.Player.OwnedLines.Add((Equipment.Line)this._menu.Selected.Index);
+            this.Player.Money -= Shop.FishingLinePrices[this._menu.Selected.Index].ItemPrice;
         }
 
         private void BuyFishingHook()
         {
-            if (this.Player.OwnedHooks.Contains(item: (Equipment.Hook)this._menu.Selected.Index)) return;
+            if (this.Player.OwnedHooks.Contains((Equipment.Hook)this._menu.Selected.Index)) return;
 
-            if (this.Player.Money < Shop.FishingHookPrices[index: this._menu.Selected.Index].ItemPrice) return;
+            if (this.Player.Money < Shop.FishingHookPrices[this._menu.Selected.Index].ItemPrice) return;
 
-            this.Player.OwnedHooks.Add(item: (Equipment.Hook)this._menu.Selected.Index);
-            this.Player.Money -= Shop.FishingHookPrices[index: this._menu.Selected.Index].ItemPrice;
+            this.Player.OwnedHooks.Add((Equipment.Hook)this._menu.Selected.Index);
+            this.Player.Money -= Shop.FishingHookPrices[this._menu.Selected.Index].ItemPrice;
         }
 
         private void BuyFishingRadar()
         {
-            if (this.Player.OwnedRadars.Contains(item: (Equipment.LookingAid)this._menu.Selected.Index)) return;
+            if (this.Player.Money < Shop.FishingLookingAidPrices[this._menu.Selected.Index].ItemPrice) return;
 
-            if (this.Player.Money < Shop.FishingLookingAidPrices[index: this._menu.Selected.Index].ItemPrice) return;
-
-            this.Player.OwnedRadars.Add(item: (Equipment.LookingAid)this._menu.Selected.Index);
-            this.Player.Money -= Shop.FishingLookingAidPrices[index: this._menu.Selected.Index].ItemPrice;
+            this.Player.OwnedRadars.Add(new Radar((Equipment.LookingAid)this._menu.Selected.Index + 1));
+            this.Player.Money -= Shop.FishingLookingAidPrices[this._menu.Selected.Index].ItemPrice;
         }
 
         private void GenerateOwnedFishingRods()
         {
             this._menu.Selected.Clear();
-            foreach (Equipment.FishingRod t in this.Player.OwnedRods) this._menu.Selected.Add(name: "" + t, a: this.SelectRod);
+            for (int i = 0; i < this.Player.OwnedRods.Count; i++)
+            {
+                this._menu.Selected.Add("" + this.Player.OwnedRods[i], this.SelectRod, i);
+            }
+
+            this._menu.Selected.MaxColumns = 1;
         }
 
         private void GeneratedOwnedFishingLines()
         {
             this._menu.Selected.Clear();
-            foreach (Equipment.Line t in this.Player.OwnedLines) this._menu.Selected.Add(name: "" + t, a: null);
+            for (int i = 0; i < this.Player.OwnedLines.Count; i++)
+            {
+                this._menu.Selected.Add("" + this.Player.OwnedLines[i], this.SelectLine, i);
+            }
+
+            this._menu.Selected.MaxColumns = 1;
         }
 
         private void GenerateOwnedFishingHooks()
         {
             this._menu.Selected.Clear();
-            foreach (Equipment.Hook t in this.Player.OwnedHooks) this._menu.Selected.Add(name: "" + t, a: null);
+            for (int i = 0; i < this.Player.OwnedHooks.Count; i++)
+            {
+                this._menu.Selected.Add("" + this.Player.OwnedHooks[i], this.SelectHook, i);
+            }
+
+            this._menu.Selected.MaxColumns = 1;
         }
 
         private void GeneratedOwnedFishingRadar()
         {
             this._menu.Selected.Clear();
-            foreach (Equipment.LookingAid t in this.Player.OwnedRadars) this._menu.Selected.Add(name: "" + t, a: null);
+            for (int i = 0; i < this.Player.OwnedRadars.Count; i++)
+            {
+                this._menu.Selected.Add("[" + this.Player.OwnedRadars[i].RadarType + $", Uses left = {this.Player.OwnedRadars[i].Uses}]", this.SelectRadar, i);
+            }
+
+            this._menu.Selected.MaxColumns = 1;
         }
 
         private void SelectRod()
@@ -214,7 +233,7 @@ namespace The_game_of_doom.Classes.Game_classes
 
         private void SelectRadar()
         {
-            this.Player.Equipment.La = (Equipment.LookingAid)this._menu.Selected.Index;
+            this.Player.Equipment.La = this.Player.OwnedRadars[this._menu.Selected.Index];
         }
 
         private void Exit()
@@ -224,35 +243,104 @@ namespace The_game_of_doom.Classes.Game_classes
             Console.Clear();
         }
 
-
-        public Game() { }
-
-        public Game(int nothing)
+        public Game()
         {
-            this.Player = new Player(nothing: 0, mM: 10);
+            this._menu = new Menu();
+            this.Player = new Player(10);
 
             this.Lakes = new List<Lake>
             {
-                new(name: "Vänern", size: 40),
-                new(name: "Vättern", size: 35),
-                new(name: "Hjälmaren", size: 30),
-                new(name: "Mälaren", size: 25),
-                new(name: "Storsjön", size: 20)
+                new("Vänern", 10),
+                new("Vättern", 9),
+                new("Hjälmaren", 8),
+                new("Mälaren", 6),
+                new("Storsjön", 4)
             };
 
-            int lakeIndex = this._rng.Next(minValue: 0, maxValue: 4);
+            int lakeIndex = this._rng.Next(0, 4);
 
-            this.Lakes[index: lakeIndex].Fishes.Add(item: new Fish
+            this.Lakes[lakeIndex].Fishes.Add(
+                new Fish("Sharknado",
+                    FishAttributes.Weight.Heavy,
+                    FishAttributes.Speed.Fast,
+                    new Position(this.Lakes[lakeIndex].Size)
+                ));
+
+            this.Lakes[lakeIndex].NumberOfFishes++;
+        }
+
+        private void PrintLakeTopMenu()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            string[] lines =
             {
-                Name = "Sharknado",
+                string.Concat(Enumerable.Repeat('-', 120)),
+                $"| Money: {this.Player.Money}\n" +
+                $"| Equipment: [Fishing rod: {this.Player.Equipment.Fr}\n" +
+                $"| Fishing line: {this.Player.Equipment.Fl}\n" +
+                $"| Fishing hook: {this.Player.Equipment.Fh}\n" +
+                $"| Radar: {this.Player.Equipment.La.RadarType}, Uses left: {this.Player.Equipment.La.Uses}]\n",
+                string.Concat(Enumerable.Repeat('-', 120))
+            };
 
-                Weight = FishAttributes.Weight.Heavy,
-                Speed = FishAttributes.Speed.Fast,
+            foreach (string line in lines) Console.Write(line);
+        }
 
-                Position = new Position(lakeSize: this.Lakes[index: lakeIndex].Size)
-            });
+        public void LakeLogic(int lakeIndex)
+        {
+            this.PrintLakeTopMenu();
 
-            this.Lakes[index: lakeIndex].NumberOfFishes++;
+            string useRadar = Asker.ForceKey("Do you want to use a radar, [y,n]?: ", "YyNn");
+
+            switch (useRadar)
+            {
+                case "Y" or "y":
+                    if (this.Player.Equipment.La.RadarType == Equipment.LookingAid.None)
+                    {
+                        Console.SetCursorPosition(0, 7);
+                        Console.Write("It seam like you do not have a radar equipped\n");
+                        Console.WriteLine("Continuing on to the lake");
+                        break;
+                    }
+
+                    string locationToLookIn =
+                        Asker.ForceInput("Enter a location to look in, the location should be formatted as [x, y]: ");
+
+                    int xLocation = Convert.ToInt32(locationToLookIn[1..locationToLookIn.IndexOf(',')]);
+                    int yLocation = Convert.ToInt32(locationToLookIn[(locationToLookIn.IndexOf(',') + 2)..^1]);
+
+                    List<Fish> foundFishesInRadius = FishAttributes.FindAllFishesInRadius(this.Lakes[lakeIndex].Fishes,
+                        this.Player, xLocation, yLocation);
+
+                    if (foundFishesInRadius.Count == 0)
+                        Console.WriteLine("Sorry, the radar did not find any fishes at, or, near the point specified. Continuing on!");
+                    else
+                    {
+                        Console.WriteLine($"Found {foundFishesInRadius.Count} fishes!");
+                        foreach (Fish fish in foundFishesInRadius) Console.WriteLine(fish.Position);
+                    }
+
+                    if (new Random().Next(0, 100) < (100 / (int)this.Player.Equipment.La.RadarType))
+                    {
+                        Console.WriteLine("Oh no! Your radar broke");
+                        this.Player.OwnedRadars.Remove(this.Player.Equipment.La);
+                        this.Player.Equipment.La = new Radar(Equipment.LookingAid.None);
+                        Thread.Sleep(500);
+                        Console.Clear();
+                        this.PrintLakeTopMenu();
+                    }
+
+                    break;
+
+                case "N" or "n":
+                    Console.WriteLine("Continuing on to the lake");
+                    break;
+            }
+
+            this.PrintLakeTopMenu();
+            
+            Console.Clear();
         }
     }
 }

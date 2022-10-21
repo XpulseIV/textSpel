@@ -9,33 +9,33 @@
 
             if ((number % 2) == 0)
             {
-                Console.WriteLine(value: number + " is not a prime!");
+                Console.WriteLine(number + " is not a prime!");
 
                 end = DateTime.Now;
 
-                Console.WriteLine(value: end - start);
+                Console.WriteLine(end - start);
 
                 return false;
             }
 
-            for (ulong i = 3; i < (Math.Floor(d: Math.Sqrt(d: number)) + 1); i += 2)
+            for (ulong i = 3; i < (Math.Floor(Math.Sqrt(number)) + 1); i += 2)
             {
                 if ((number % i) != 0) continue;
 
-                Console.WriteLine(value: number + " is not a prime!");
+                Console.WriteLine(number + " is not a prime!");
 
                 end = DateTime.Now;
 
-                Console.WriteLine(value: end - start);
+                Console.WriteLine(end - start);
 
                 return false;
             }
 
-            Console.WriteLine(value: number + " is indeed a prime! yes");
+            Console.WriteLine(number + " is indeed a prime! yes");
 
             end = DateTime.Now;
 
-            Console.WriteLine(value: end - start);
+            Console.WriteLine(end - start);
 
             return true;
         }

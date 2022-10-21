@@ -6,8 +6,6 @@
         public TItem Item { get; set; }
         public TItemPrice ItemPrice { get; set; }
 
-        public Price() { }
-
         public Price(TItem item, TItemPrice price)
         {
             this.Item = item;

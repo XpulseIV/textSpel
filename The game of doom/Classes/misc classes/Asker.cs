@@ -4,29 +4,34 @@
     {
         private static string AskUser(string prompt)
         {
-            Console.Write(value: prompt);
+            Console.Write(prompt);
 
             string input = Console.ReadLine() ?? "";
             return input;
         }
 
-        public static string ForceInput(string prompt)
+        public static string ForceInput(string prompt, int lineNumber = -1)
         {
             string input = "";
-            while (input == "") input = Asker.AskUser(prompt: prompt);
+            while (input == "")
+            {
+                if (lineNumber != -1) Console.SetCursorPosition(0, lineNumber);
+                input = Asker.AskUser(prompt);
+            }
 
             return input;
         }
 
-        public static string ForceKey(string prompt, string valid)
+        public static string ForceKey(string prompt, string valid, int lineNumber = -1)
         {
             char input = '\0';
             while (input == '\0')
             {
-                Console.Write(value: prompt);
+                if (lineNumber != -1) Console.SetCursorPosition(0, lineNumber);
+                Console.Write(prompt);
                 input = Console.ReadKey().KeyChar;
 
-                if (!valid.Contains(value: input)) input = '\0';
+                if (!valid.Contains(input)) input = '\0';
                 Console.WriteLine();
             }
 

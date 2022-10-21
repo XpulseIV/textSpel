@@ -1,70 +1,54 @@
-﻿using System.Xml.Serialization;
+﻿using System.Runtime.Serialization.Formatters.Binary;
 using NativeFileDialogSharp;
 using The_game_of_doom.Classes.Game_classes;
+
+#pragma warning disable SYSLIB0011
 
 namespace The_game_of_doom.Classes.misc_classes
 {
     /// <summary>
-    /// Functions for performing common XML Serialization operations.
-    /// <para>Only public properties and variables will be serialized.</para>
-    /// <para>Use the [XmlIgnore] attribute to prevent a property/variable from being serialized.</para>
-    /// <para>Object to be serialized must have a parameterless constructor.</para>
+    /// Functions for performing common binary Serialization operations.
+    /// <para>All properties and variables will be serialized.</para>
+    /// <para>Object type (and all child types) must be decorated with the [Serializable] attribute.</para>
+    /// <para>To prevent a variable from being serialized, decorate it with the [NonSerialized] attribute; cannot be applied to properties.</para>
     /// </summary>
-    internal static class XmlFilerDeluxe
+    internal static class BinarySerialization
     {
         /// <summary>
-        /// Writes the given object instance to an XML file.
-        /// <para>Only Public properties and variables will be written to the file. These can be any type though, even other classes.</para>
-        /// <para>If there are public properties/variables that you do not want written to the file, decorate them with the [XmlIgnore] attribute.</para>
-        /// <para>Object type must have a parameterless constructor.</para>
+        /// Writes the given object instance to a binary file.
+        /// <para>Object type (and all child types) must be decorated with the [Serializable] attribute.</para>
+        /// <para>To prevent a variable from being serialized, decorate it with the [NonSerialized] attribute; cannot be applied to properties.</para>
         /// </summary>
-        /// <typeparam name="T">The type of object being written to the file.</typeparam>
+        /// <typeparam name="T">The type of object being written to the BinaryFile file.</typeparam>
         /// <param name="filePath">The file path to write the object instance to.</param>
-        /// <param name="objectToWrite">The object instance to write to the file.</param>
+        /// <param name="objectToWrite">The object instance to write to the XML file.</param>
         /// <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
-        private static void WriteToXmlFile<T>(string filePath, T objectToWrite, bool append = false) where T : new()
+        private static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
         {
-            TextWriter? writer = null;
-            try
-            {
-                XmlSerializer serializer = new(type: typeof(T));
-                writer = new StreamWriter(path: filePath, append: append);
-                serializer.Serialize(textWriter: writer, o: objectToWrite);
-            }
-            finally
-            {
-                writer?.Close();
-            }
+            using Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create);
+            BinaryFormatter binaryFormatter = new();
+            binaryFormatter.Serialize(stream, objectToWrite!);
         }
 
         /// <summary>
-        /// Reads an object instance from an XML file.
-        /// <para>Object type must have a parameterless constructor.</para>
+        /// Reads an object instance from a binary file.
         /// </summary>
-        /// <typeparam name="T">The type of object to read from the file.</typeparam>
+        /// <typeparam name="T">The type of object to read from the Binary file.</typeparam>
         /// <param name="filePath">The file path to read the object instance from.</param>
-        /// <returns>Returns a new instance of the object read from the XML file.</returns>
-        private static T ReadFromXmlFile<T>(string filePath) where T : new()
+        /// <returns>Returns a new instance of the object read from the Binary file.</returns>
+        private static T ReadFromBinaryFile<T>(string filePath)
         {
-            TextReader? reader = null;
-            try
-            {
-                XmlSerializer serializer = new(type: typeof(T));
-                reader = new StreamReader(path: filePath);
-                return (T)serializer.Deserialize(textReader: reader)!;
-            }
-            finally
-            {
-                reader?.Close();
-            }
+            using Stream stream = File.Open(filePath, FileMode.Open);
+            BinaryFormatter binaryFormatter = new();
+            return (T)binaryFormatter.Deserialize(stream);
         }
 
         public static void SaveGame(Game? game)
         {
             string fileName = Asker.ForceInput(
-                prompt: "Enter a name for the save file: ");
+                "Enter a name for the save file: ");
 
-            XmlFilerDeluxe.WriteToXmlFile(filePath: Directory.GetCurrentDirectory() + "\\saves\\" + fileName + ".xml", objectToWrite: game);
+            BinarySerialization.WriteToBinaryFile(Directory.GetCurrentDirectory() + "\\saves\\" + fileName + ".yes", game);
         }
 
         public static Game LoadGame()
@@ -72,11 +56,11 @@ namespace The_game_of_doom.Classes.misc_classes
             DialogResult dialogResult;
 
             do
-                dialogResult = Dialog.FileOpen(filterList: null, defaultPath: Directory.GetCurrentDirectory() + "\\saves");
+                dialogResult = Dialog.FileOpen(null, Directory.GetCurrentDirectory() + "\\saves");
             while (dialogResult.IsCancelled);
 
-            string fileName = dialogResult.Path!;
-            Game game = XmlFilerDeluxe.ReadFromXmlFile<Game>(filePath: fileName);
+            string filePath = dialogResult.Path!;
+            Game game = BinarySerialization.ReadFromBinaryFile<Game>(filePath);
 
             return game;
         }

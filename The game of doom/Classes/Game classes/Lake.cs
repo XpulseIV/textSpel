@@ -13,17 +13,15 @@ namespace The_game_of_doom.Classes.Game_classes
 
         public List<Fish> Fishes;
 
-        public Lake() { }
-
         public Lake(string name, int size)
         {
             this.Name = name;
 
             this.Size = size;
 
-            this.NumberOfFishes = (int)(Math.Pow(x: size, y: 2) * 0.48);
+            this.NumberOfFishes = (int)(Math.Pow(size, 2) * 0.48);
 
-            this.Fishes = Enumerable.Range(start: 1, count: this.NumberOfFishes).Select(selector: _ => new Fish(fishType: new Random().Next(minValue: 0, maxValue: 14), lakeSize: size)).ToList();
+            this.Fishes = Enumerable.Range(1, this.NumberOfFishes).Select(_ => new Fish(new Random().Next(0, 14), size)).ToList();
         }
     }
 }

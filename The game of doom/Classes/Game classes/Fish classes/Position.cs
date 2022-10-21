@@ -6,9 +6,7 @@
         public int PosX { get; set; } = new();
         public int PosY { get; set; } = new();
 
-        private Random _rng = new();
-
-        public Position() { }
+        [NonSerialized] private Random _rng = new();
 
         public Position(int x, int y)
         {
@@ -18,14 +16,14 @@
 
         public Position(int lakeSize)
         {
-            this.PosX = this._rng.Next(minValue: 0, maxValue: lakeSize);
-            this.PosY = this._rng.Next(minValue: 0, maxValue: lakeSize);
+            this.PosX = this._rng.Next(0, lakeSize);
+            this.PosY = this._rng.Next(0, lakeSize);
         }
 
         public void Move(int speed)
         {
-            this.PosX += this._rng.Next(minValue: -1, maxValue: 1) * speed;
-            this.PosY += this._rng.Next(minValue: -1, maxValue: 1) * speed;
+            this.PosX += this._rng.Next(-1, 2) * speed;
+            this.PosY += this._rng.Next(-1, 2) * speed;
         }
     }
 }

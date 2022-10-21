@@ -4,8 +4,8 @@
     {
         public static int[] FindAllIndex<T>(this IEnumerable<T> array, Predicate<T> match)
         {
-            return array.Select(selector: (value, index) => match(obj: value) ? index : -1)
-                .Where(predicate: static index => index != -1).ToArray();
+            return array.Select((value, index) => match(value) ? index : -1)
+                .Where(static index => index != -1).ToArray();
         }
     }
 }

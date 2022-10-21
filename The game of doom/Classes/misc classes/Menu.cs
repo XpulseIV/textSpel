@@ -47,7 +47,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
         public Menu(string title, int m, Item[] items)
         {
-            Main = new Item(title, items: items);
+            Main = new Item(title, items);
             Items = new List<Item>(items);
             Money = m;
 
@@ -66,8 +66,6 @@ namespace The_game_of_doom.Classes.misc_classes
         // Worker cycle
         public void Begin()
         {
-            System.Console.CursorVisible = false;
-
             while (canWork)
             {
                 Refresh();
@@ -147,7 +145,14 @@ namespace The_game_of_doom.Classes.misc_classes
                                 }
                             }
 
-                            Selected = Current.Items[sel];
+                            try
+                            {
+                                Selected = Current.Items[sel];
+                            }
+                            catch (Exception e)
+                            {
+                                // ignored
+                            }
 
                             break;
                         }
@@ -165,7 +170,14 @@ namespace The_game_of_doom.Classes.misc_classes
                                 }
                             }
 
-                            Selected = Current.Items[sel];
+                            try
+                            {
+                                Selected = Current.Items[sel];
+                            }
+                            catch (Exception e)
+                            {
+                                // ignored
+                            }
 
                             break;
                         }
@@ -304,7 +316,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
             while (cur != null)
             {
-                nav = cur.Name + " => " + nav + " " + Money;
+                nav = cur.Name + " => " + nav;
 
                 cur = cur.Parent;
             }
@@ -406,7 +418,7 @@ namespace The_game_of_doom.Classes.misc_classes
             public string Value { get; set; } = "";
             public string Title { get; set; }
 
-            public InputItem(string name, string title, Action<string> action) : base(name: name, null as Action, 0, -1)
+            public InputItem(string name, string title, Action<string> action) : base(name, null as Action, 0, -1)
             {
                 Title = title;
                 Action = action;
@@ -454,9 +466,9 @@ namespace The_game_of_doom.Classes.misc_classes
                 ((List<Item>)Items).Add(item);
             }
 
-            public Item Add(string name, Action? a, int maxColumns = 0)
+            public Item Add(string name, Action? a, int index = 0)
             {
-                var itm = new Item(name: name, a, maxColumns, - 1) { Parent = this };
+                var itm = new Item(name, a, index, - 1) { Parent = this };
 
                 ((List<Item>)Items).Add(itm);
 
@@ -465,7 +477,7 @@ namespace The_game_of_doom.Classes.misc_classes
 
             public Item Add(string name, Action? a, object tag, int maxColumns = 0)
             {
-                var itm = new Item(name: name, a, maxColumns, - 1) { Parent = this, Tag = tag };
+                var itm = new Item(name, a, maxColumns, - 1) { Parent = this, Tag = tag };
 
                 ((List<Item>)Items).Add(itm);
 
