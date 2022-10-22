@@ -15,6 +15,14 @@ namespace The_game_of_doom.Classes.Game_classes
 
         [NonSerialized] private Random _rng = new();
 
+        private void Move(Game other)
+        {
+            this.Player = other.Player;
+            this._menu = other._menu;
+            this.Lakes = other.Lakes;
+            this._rng = other._rng;
+        }
+
         public void Play(bool playedThisSaveBefore)
         {
             Console.Clear();
@@ -29,8 +37,9 @@ namespace The_game_of_doom.Classes.Game_classes
                                               "5: To Storsjön\n" +
                                               "6: To the shop\n" +
                                               "7: Exit game\n", "1234567", 1);
+            Console.Clear();
 
-            int lakeIndex = int.Parse(placeToGo);
+            int lakeIndex = int.Parse(placeToGo) - 1;
 
             switch (lakeIndex)
             {
@@ -250,14 +259,14 @@ namespace The_game_of_doom.Classes.Game_classes
 
             this.Lakes = new List<Lake>
             {
-                new("Vänern", 10),
-                new("Vättern", 9),
-                new("Hjälmaren", 8),
-                new("Mälaren", 6),
-                new("Storsjön", 4)
+                new("Vänern", 21),
+                new("Vättern", 17),
+                new("Hjälmaren", 13),
+                new("Mälaren", 9),
+                new("Storsjön", 5)
             };
 
-            int lakeIndex = this._rng.Next(0, 4);
+            int lakeIndex = this._rng.Next(0, 5);
 
             this.Lakes[lakeIndex].Fishes.Add(
                 new Fish("Sharknado",
@@ -267,11 +276,15 @@ namespace The_game_of_doom.Classes.Game_classes
                 ));
 
             this.Lakes[lakeIndex].NumberOfFishes++;
+
+            foreach (Lake lake in this.Lakes)
+            {
+                lake.VisualLake.GenerateFishMap(lake.Fishes);
+            }
         }
 
-        private void PrintLakeTopMenu()
+        public void PrintLakeTopMenu()
         {
-            Console.Clear();
             Console.SetCursorPosition(0, 0);
             string[] lines =
             {
@@ -289,58 +302,9 @@ namespace The_game_of_doom.Classes.Game_classes
 
         public void LakeLogic(int lakeIndex)
         {
-            this.PrintLakeTopMenu();
-
-            string useRadar = Asker.ForceKey("Do you want to use a radar, [y,n]?: ", "YyNn");
-
-            switch (useRadar)
-            {
-                case "Y" or "y":
-                    if (this.Player.Equipment.La.RadarType == Equipment.LookingAid.None)
-                    {
-                        Console.SetCursorPosition(0, 7);
-                        Console.Write("It seam like you do not have a radar equipped\n");
-                        Console.WriteLine("Continuing on to the lake");
-                        break;
-                    }
-
-                    string locationToLookIn =
-                        Asker.ForceInput("Enter a location to look in, the location should be formatted as [x, y]: ");
-
-                    int xLocation = Convert.ToInt32(locationToLookIn[1..locationToLookIn.IndexOf(',')]);
-                    int yLocation = Convert.ToInt32(locationToLookIn[(locationToLookIn.IndexOf(',') + 2)..^1]);
-
-                    List<Fish> foundFishesInRadius = FishAttributes.FindAllFishesInRadius(this.Lakes[lakeIndex].Fishes,
-                        this.Player, xLocation, yLocation);
-
-                    if (foundFishesInRadius.Count == 0)
-                        Console.WriteLine("Sorry, the radar did not find any fishes at, or, near the point specified. Continuing on!");
-                    else
-                    {
-                        Console.WriteLine($"Found {foundFishesInRadius.Count} fishes!");
-                        foreach (Fish fish in foundFishesInRadius) Console.WriteLine(fish.Position);
-                    }
-
-                    if (new Random().Next(0, 100) < (100 / (int)this.Player.Equipment.La.RadarType))
-                    {
-                        Console.WriteLine("Oh no! Your radar broke");
-                        this.Player.OwnedRadars.Remove(this.Player.Equipment.La);
-                        this.Player.Equipment.La = new Radar(Equipment.LookingAid.None);
-                        Thread.Sleep(500);
-                        Console.Clear();
-                        this.PrintLakeTopMenu();
-                    }
-
-                    break;
-
-                case "N" or "n":
-                    Console.WriteLine("Continuing on to the lake");
-                    break;
-            }
-
-            this.PrintLakeTopMenu();
-            
-            Console.Clear();
+            Game modifiedGame = this;
+            this.Lakes[lakeIndex].VisualLake.Loop(ref modifiedGame);
+            this.Move(modifiedGame);
         }
     }
 }
