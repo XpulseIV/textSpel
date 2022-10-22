@@ -39,12 +39,12 @@ namespace The_game_of_doom.Classes.Game_classes
                                               "7: Exit game\n", "1234567", 1);
             Console.Clear();
 
-            int lakeIndex = int.Parse(placeToGo) - 1;
+            int lakeIndex = int.Parse(placeToGo);
 
             switch (lakeIndex)
             {
                 case < 6:
-                    this.LakeLogic(lakeIndex);
+                    this.LakeLogic(lakeIndex - 1);
 
                     goto ChoosePlace;
                 case 6:
@@ -54,7 +54,7 @@ namespace The_game_of_doom.Classes.Game_classes
                 case 7:
                     string key = Asker.ForceKey("Do you want to save?\n" +
                                                 "1: Yes\n" +
-                                                "2: No\n", "YyNn");
+                                                "2: No\n", "YyNn", 0);
 
                     switch (key)
                     {
