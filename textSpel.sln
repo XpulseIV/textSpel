@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "The game of doom", "The gam
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp", "cpp\cpp.vcxproj", "{AA8A1A1C-AD5A-44C2-9C80-8233723B787D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testStuff", "testStuff\testStuff.csproj", "{E5C7E70D-52D9-4F90-82C1-B53130EF84A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AA8A1A1C-AD5A-44C2-9C80-8233723B787D}.Debug|Any CPU.Build.0 = Debug|x64
 		{AA8A1A1C-AD5A-44C2-9C80-8233723B787D}.Release|Any CPU.ActiveCfg = Release|x64
 		{AA8A1A1C-AD5A-44C2-9C80-8233723B787D}.Release|Any CPU.Build.0 = Release|x64
+		{E5C7E70D-52D9-4F90-82C1-B53130EF84A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5C7E70D-52D9-4F90-82C1-B53130EF84A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5C7E70D-52D9-4F90-82C1-B53130EF84A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5C7E70D-52D9-4F90-82C1-B53130EF84A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

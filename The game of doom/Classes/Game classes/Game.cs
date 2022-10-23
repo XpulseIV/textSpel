@@ -149,8 +149,10 @@ namespace The_game_of_doom.Classes.Game_classes
 
             if (this.Player.Money < Shop.FishingRodPrices[this._menu.Selected.Index].ItemPrice) return;
 
-            this.Player.OwnedRods.Add((Equipment.FishingRod)(this._menu.Selected.Index));
+            this.Player.OwnedRods.Add((Equipment.FishingRod)this._menu.Selected.Index);
             this.Player.Money -= Shop.FishingRodPrices[this._menu.Selected.Index].ItemPrice;
+
+            this.Player.Equipment.Fr = (Equipment.FishingRod)this._menu.Selected.Index;
         }
 
         private void BuyFishingLine()
@@ -161,6 +163,8 @@ namespace The_game_of_doom.Classes.Game_classes
 
             this.Player.OwnedLines.Add((Equipment.Line)this._menu.Selected.Index);
             this.Player.Money -= Shop.FishingLinePrices[this._menu.Selected.Index].ItemPrice;
+
+            this.Player.Equipment.Fl = (Equipment.Line)this._menu.Selected.Index;
         }
 
         private void BuyFishingHook()
@@ -171,6 +175,8 @@ namespace The_game_of_doom.Classes.Game_classes
 
             this.Player.OwnedHooks.Add((Equipment.Hook)this._menu.Selected.Index);
             this.Player.Money -= Shop.FishingHookPrices[this._menu.Selected.Index].ItemPrice;
+
+            this.Player.Equipment.Fh = (Equipment.Hook)this._menu.Selected.Index;
         }
 
         private void BuyFishingRadar()
@@ -179,6 +185,8 @@ namespace The_game_of_doom.Classes.Game_classes
 
             this.Player.OwnedRadars.Add(new Radar((Equipment.LookingAid)this._menu.Selected.Index + 1));
             this.Player.Money -= Shop.FishingLookingAidPrices[this._menu.Selected.Index].ItemPrice;
+
+            this.Player.Equipment.La = this.Player.OwnedRadars[^1];
         }
 
         private void GenerateOwnedFishingRods()
